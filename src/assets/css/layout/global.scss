@@ -1,0 +1,23 @@
+// layout shold fill the whole screen
+.Layout-appFrame-2 {
+  // height: calc(100vh - 45px);
+  flex-grow: 1;
+}
+
+//remove refresh button from appbar
+button[title='Refresh'],
+.app-loader {
+  display: none;
+}
+
+.MuiAppBar-positionFixed {
+  transform: none !important;
+  transition: none !important;
+  visibility: visible !important;
+}
+
+@media (min-width: 0px) {
+  .Layout-content-4 {
+    padding-left: 24px;
+  }
+}
