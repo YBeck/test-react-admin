@@ -14,7 +14,6 @@ const { REACT_APP_LOGIN_URL } = process.env;
 // let dispatch;
 
 export const authProvider = (type, params) => {
-  console.log({type, params})
   switch (true) {
     // called when the user attempts to log in
     case type === AUTH_LOGIN:
@@ -24,6 +23,7 @@ export const authProvider = (type, params) => {
       localStorage.removeItem('token');
       localStorage.removeItem('roles');
       authUser.reset();
+      reduxStore().dispatch(userActions.clearUserRofile());
       return Promise.resolve();
     case type === AUTH_ERROR:
       // called when the API returns an error
@@ -68,11 +68,11 @@ function loginUser(params) {
       return response.json();
     })
     .then(({ token /* , expiration */ }) => {
-      const { load, reset, ...rest } = authUser;
+      const { load } = authUser;
       localStorage.setItem('token', token);
       load(token);
       localStorage.setItem('roles', authUser.roles);
-      reduxStore().dispatch(userActions.storeProfile({ ...rest }));
+      reduxStore().dispatch(userActions.getUserProfile());
       // dispatch(userActions.storeProfile({ ...rest }))
       
        return Promise.resolve();

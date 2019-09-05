@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
+import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
@@ -69,6 +70,7 @@ export default ({
       applyMiddleware(
         sagaMiddleware,
         routerMiddleware(history),
+        thunk,
         // add your own middlewares here
       ),
       typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__

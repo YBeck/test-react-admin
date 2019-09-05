@@ -3,7 +3,8 @@ import './assets/css/styles.scss';
 import { Admin, Resource, EditGuesser } from 'react-admin';
 
 import { Provider, useDispatch } from 'react-redux';
-import { PersistGate } from 'redux-persist/es/integration/react';
+import { userActions } from './state/actions';
+// import { PersistGate } from 'redux-persist/es/integration/react';
 import { createHashHistory } from 'history';
 import { StylesProvider, jssPreset } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core';
@@ -80,7 +81,7 @@ const App = () => {
           />
           <Resource name='comments' />
         </Admin>
-        {/* <DispatchSaver /> */}
+        <GetUserProfile />
       </Provider>
     </StylesProvider>
   );
@@ -93,6 +94,15 @@ export default App;
 //   saveDispatch(dispatch);
 //   return null;
 // };
+
+const GetUserProfile = props => {
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  if(token) {
+    dispatch(userActions.getUserProfile());
+  }
+  return null;
+}
 
 function renderResources(/* roles */) {
   // NOTE: Not using roles here because we're using our `authorized` function.
