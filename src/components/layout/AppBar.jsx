@@ -76,7 +76,6 @@ const MyAppBarView = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userType = 'mltc'; // MAKE REAL
-  console.log({ appProps: props });
   return (
     <AppBar
       {...props}

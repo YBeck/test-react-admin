@@ -6,13 +6,14 @@ import { Provider, useDispatch } from 'react-redux';
 import { userActions } from './state/actions';
 // import { PersistGate } from 'redux-persist/es/integration/react';
 import { createHashHistory } from 'history';
-import { StylesProvider, jssPreset } from '@material-ui/styles';
+import { StylesProvider, jssPreset, ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core';
 import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
-import { dataProvider, authProvider, /* saveDispatch */ } from './server';
+import { dataProvider, authProvider /* saveDispatch */ } from './server';
 import { Layout } from './components/layout';
+import { FrequentlyAccessed } from './components/common';
 import { create } from 'jss';
 // import { reducers } from "./state/reducers";
 import createAdminStore from './createAdminStore';
@@ -26,8 +27,11 @@ import { customRoutes } from './pages';
 
 const theme = createMuiTheme({
   palette: {
-    primary: indigo,
-    secondary: pink,
+    // primary: {
+    //   main: '#24B7F6'
+    // },
+    primary: pink,
+    // secondary: pink,
     error: red,
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -46,43 +50,45 @@ const history = createHashHistory();
 
 const App = () => {
   return (
-    <StylesProvider jss={jss}>
-      <Provider
-        store={createAdminStore({
-          authProvider,
-          dataProvider,
-          // i18nProvider,
-          history,
-        })}
-      >
-        <Admin
-          dataProvider={dataProvider}
-          dashboard={Dashboard}
-          authProvider={authProvider}
-          theme={theme}
-          layout={Layout}
-          // customReducers={reducers}
-          history={history}
-          customRoutes={customRoutes}
+    <StylesProvider jss={jss} injectFirst>
+      {/* <ThemeProvider theme={theme}> */}
+        <Provider
+          store={createAdminStore({
+            authProvider,
+            dataProvider,
+            // i18nProvider,
+            history,
+          })}
         >
-          {/* {renderResources()} */}
-          <Resource
-            name='users'
-            list={userResource.list}
-            icon={userResource.icon}
-            options={{ ...userResource.options, myCustomAttr: '10' }}
-          />
-          <Resource
-            name='posts'
-            // list={postResource.list}
-            edit={postResource.edit}
-            // create={postResource.create}
-            // icon={postResource.icon}
-          />
-          <Resource name='comments' />
-        </Admin>
-        <GetUserProfile />
-      </Provider>
+          <Admin
+            dataProvider={dataProvider}
+            dashboard={Dashboard}
+            authProvider={authProvider}
+            layout={Layout}
+            // customReducers={reducers}
+            history={history}
+            customRoutes={customRoutes}
+          >
+            {/* {renderResources()} */}
+            <Resource
+              name='users'
+              list={userResource.list}
+              icon={userResource.icon}
+              options={{ ...userResource.options, myCustomAttr: '10' }}
+            />
+            <Resource
+              name='posts'
+              // list={postResource.list}
+              edit={postResource.edit}
+              // create={postResource.create}
+              // icon={postResource.icon}
+            />
+            <Resource name='comments' />
+            <FrequentlyAccessed />
+          </Admin>
+          <GetUserProfile />
+        </Provider>
+      {/* </ThemeProvider> */}
     </StylesProvider>
   );
 };
@@ -98,11 +104,11 @@ export default App;
 const GetUserProfile = props => {
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-  if(token) {
+  if (token) {
     dispatch(userActions.getUserProfile());
   }
   return null;
-}
+};
 
 function renderResources(/* roles */) {
   // NOTE: Not using roles here because we're using our `authorized` function.

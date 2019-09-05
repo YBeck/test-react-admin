@@ -81,7 +81,7 @@ const SidebarCasesView = ({ reduxActions, sidebarCase, profile, ...props }) => {
         {sidebarCase ? (
           <CaseItem {...selectedCase} showArrowIcon toggleList={toggleList} />
         ) : (
-          <AllCasesDropdown userType={profile ? profile.userType : 'Subacute'} toggleList={toggleList}/> // MAKE REAL
+          <AllCasesDropdown userType={profile ? getUserDivision(profile) : ''} toggleList={toggleList}/> // MAKE REAL
         )}
         {expandList &&
           Object.keys(otherCases).map(id => {
@@ -169,3 +169,17 @@ var cases = convertToObj([
     avatar: '/images/avatar.png',
   },
 ]);
+
+
+function getUserDivision(profile) {
+  const { is_mltc, is_subacute } = profile
+  if(is_mltc && is_subacute) {
+    return ''
+  } else {
+    if(is_mltc) {
+      return 'MLTC'
+    } else {
+      return 'Subacute'
+    }
+  }
+}

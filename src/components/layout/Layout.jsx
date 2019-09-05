@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Layout as AdminLayout, setSidebarVisibility } from 'react-admin';
 import { MyAppBar } from './AppBar';
 import { MySidebar } from './Sidebar';
-import { withStyles } from "@material-ui/core";
 // import MyMenu from './MyMenu';
 // import MyNotification from './MyNotification';
 
