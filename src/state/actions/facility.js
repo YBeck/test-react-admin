@@ -1,5 +1,5 @@
 // import qs from "querystring";
-// import { authClient } from "../../server";
+// import { authGet } from "../../server";
 import { GET_ONE } from 'react-admin';
 
 export const facilityTypes = {
@@ -8,7 +8,7 @@ export const facilityTypes = {
 // export const facilityActions = {
 //   getFacility(facilityId) {
 //     return async dispatch => {
-//       const response = await authClient.get(`/users/${qs.stringify({id_like: facilityId})}`);
+//       const response = await authGet(`/users/${qs.stringify({id_like: facilityId})}`);
 //       console.log({response});
 
 //       dispatch({

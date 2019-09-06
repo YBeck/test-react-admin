@@ -1,4 +1,4 @@
-import { authClient } from '../../server';
+import { authGet } from '../../server';
 export const userTypes = {
   GET_USER_PROFILE: 'GET_USER_PROFILE',
   CLEAR_USER_PROFILE: 'CLEAR_USER_PROFILE',
@@ -7,13 +7,15 @@ export const userTypes = {
 export const userActions = {
   getUserProfile(profile) {
     return async dispatch => {
-      const response = await authClient.get('/users/profile');
+      const response = await authGet('/users/profile');      
       if (response.error) {
         return null;
       }
+      console.log({response});
+      
       dispatch({
         type: userTypes.GET_USER_PROFILE,
-        payload: response.json,
+        payload: response.data,
       });
     };
   },

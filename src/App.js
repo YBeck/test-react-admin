@@ -1,4 +1,5 @@
 import React from 'react';
+import jwtDecode from "jwt-decode";
 import './assets/css/styles.scss';
 import { Admin, Resource, EditGuesser } from 'react-admin';
 
@@ -11,7 +12,7 @@ import { createMuiTheme } from '@material-ui/core';
 import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
-import { dataProvider, authProvider /* saveDispatch */ } from './server';
+import { dataProvider, authProvider, setAuthRequestToken } from './server';
 import { Layout } from './components/layout';
 import { FrequentlyAccessed } from './components/common';
 import { create } from 'jss';
@@ -65,6 +66,7 @@ const App = () => {
             dashboard={Dashboard}
             authProvider={authProvider}
             layout={Layout}
+            theme={theme}
             // customReducers={reducers}
             history={history}
             customRoutes={customRoutes}
@@ -105,6 +107,8 @@ const GetUserProfile = props => {
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   if (token) {
+    const { exp } = jwtDecode(token);    
+    setAuthRequestToken(token, exp);
     dispatch(userActions.getUserProfile());
   }
   return null;

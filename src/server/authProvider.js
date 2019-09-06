@@ -7,6 +7,7 @@ import {
 } from 'react-admin';
 import jwtDecode from 'jwt-decode';
 import { authRoles } from './authRoles';
+import { setAuthRequestToken } from './AuthRequest';
 import { reduxStore } from '../createAdminStore';
 import { userActions } from '../state/actions';
 const { REACT_APP_LOGIN_URL } = process.env;
@@ -68,9 +69,10 @@ function loginUser(params) {
       return response.json();
     })
     .then(({ token /* , expiration */ }) => {
-      const { load } = authUser;
+      const { load, token_expiration } = authUser;
       localStorage.setItem('token', token);
       load(token);
+      setAuthRequestToken(token, token_expiration);
       localStorage.setItem('roles', authUser.roles);
       reduxStore().dispatch(userActions.getUserProfile());
       // dispatch(userActions.storeProfile({ ...rest }))
@@ -120,6 +122,7 @@ export const authUser = {
         authUser.id = tokenInfo.userId;
         authUser.loggedIn = true;
         authUser.roles = roles;
+        authUser.token_expiration = tokenInfo.exp;
         authRoles.forEach(ar => {
           authUser[ar.prop] = roles.indexOf(ar.id) > -1;
         });
@@ -139,6 +142,7 @@ export const authUser = {
     authUser.id = 0;
     authUser.loggedIn = false;
     authUser.roles = [];
+    authUser.token_expiration = undefined;
     authRoles.forEach(ar => (authUser[ar.prop] = false));
   },
 };
